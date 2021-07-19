@@ -1,0 +1,32 @@
+rp=100;%pitch circle radius
+rb=93.97;%base circle radius rb=rp*cos(20degrees)
+ra=110;%addendum circle radius ra=rp+m module=10 mm
+rd=87.5;%dedendum circle radius rd=rp-1.25m
+delta=5.375;%half the angle which the gear tooth subtends at centre
+psi=(0:5:32);%psi max is 32 ; cos((phi)_max)=rb/ra 
+t=(psi+delta)*pi/180;
+alpha=(0:5:360);
+hold on
+plot(rb*cosd(alpha),rb*sind(alpha),"m");%base circle
+plot(ra*cosd(alpha),ra*sind(alpha),"b");%addendum circle
+plot(rd*cosd(alpha),rd*sind(alpha),"g");%dedendum circle
+x1=(cos(alpha).*rd:cos(alpha).*rb);%as base circle radius isgreater than dedendum circle radius.
+y1=tand(delta).*x1;
+y2=tand(-delta).*x1;
+plot(x1,y1,"r");
+plot(x1,y2,"r");
+for p=(0:18:360)%for 20 gear tooth
+    j=p;
+    i=1:numel(j);
+    x2=rb*(cosd(psi+j(i))+((t).*sind(psi+j(i))));
+    y2=rb*(sind(psi+p(i))-((t).*cosd(psi+p(i))));
+    plot(x2,y2,"r");%plotting involutes
+    plot(x2,-y2,"r");
+end
+for r=(0:18:360)
+    x3=(x1*cosd(r))+(y1*sind(r));
+    y3=x1*sind(r)-(y1*cosd(r));
+    plot(x3,y3,"r")
+    plot(x3,-y3,"r")
+end
+axis square
